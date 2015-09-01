@@ -1,0 +1,167 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+<ui:composition template="WEB-INF/templates/BasicTemplate.xhtml">
+
+	<ui:define name="header">
+		<div id="main_header">
+			<div style="float: left; width: 70%;">
+				<h:outputStylesheet library="css" name="menu.css" />
+
+				<div id="navigation">
+					<ul>
+						<li><h:link value="About us" outcome="index.xhtml" />|</li>
+						<li><h:link value="Goods manager" outcome="goodsManager.xhtml" />|</li>
+						<li><h:link value="Customer manager" outcome="customerManager.xhtml" />|</li>
+						<li><h:link value="Contacts" outcome="contacts.xhtml" /></li>
+					</ul>
+				</div>
+
+			</div>
+
+			<ui:include src="login.xhtml" />
+		</div>
+	</ui:define>
+
+	<ui:define name="content">
+		<h:form id="customersMangerForm">
+
+			<p:tabView id="customers">
+
+				<p:tab
+					title="Approved customers (#{customerController.approvedCustomers.size()})">
+
+					<p:dataTable value="#{customerController.approvedCustomers}"
+						var="customer" editable="true" style="text-align:center;"
+						emptyMessage="No approved customers found. ">
+
+						<p:column headerText="Name" filterBy="#{customer.name}">
+							<h:outputText value="#{customer.name}" />
+						</p:column>
+
+						<p:column headerText="CRScode" filterBy="#{customer.CRScode}">
+							<h:outputText value="#{customer.CRScode}" />
+						</p:column>
+
+						<p:column headerText="Register date"
+							filterBy="#{customer.registerDate}">
+
+							<h:outputText value="#{customer.registerDate}">
+								<f:convertDateTime pattern="dd MMMM yyyy" locale="en" />
+							</h:outputText>
+						</p:column>
+
+
+					</p:dataTable>
+
+				</p:tab>
+
+				<p:tab
+					title="New customers (#{customerController.newCustomers.size()})">
+					<h:form id="form">
+						<p:dataTable value="#{customerController.newCustomers}"
+							var="newCustomer" editable="true" style="text-align:center;"
+							emptyMessage="Your company is not interested for anybody">
+
+							<p:ajax event="rowEdit"
+								listener="#{customerController.updateCustomer}" />
+							<p:ajax event="rowEditCancel" />
+
+							<p:column headerText="Name" filterBy="#{newCustomer.name}">
+								<p:cellEditor>
+									<f:facet name="output">
+										<h:outputText value="#{newCustomer.name}" />
+									</f:facet>
+									<f:facet name="input">
+										<h:inputText value="#{newCustomer.name}" maxlength="50" />
+									</f:facet>
+								</p:cellEditor>
+							</p:column>
+
+							<p:column headerText="CRScode" filterBy="#{newCustomer.CRScode}">
+								<p:cellEditor>
+									<f:facet name="output">
+										<h:outputText value="#{newCustomer.CRScode}" />
+									</f:facet>
+									<f:facet name="input">
+										<p:inputMask id="CRScode" value="#{newCustomer.CRScode}"
+											mask="99999999">
+										</p:inputMask>
+									</f:facet>
+								</p:cellEditor>
+							</p:column>
+
+							<p:column headerText="Register date"
+								filterBy="#{newCustomer.registerDate}">
+								<h:outputText value="#{newCustomer.registerDate}">
+									<f:convertDateTime pattern="dd MMMM yyyy" locale="en" />
+								</h:outputText>
+							</p:column>
+
+							<p:column headerText="Edit before approve">
+								<p:rowEditor />
+							</p:column>
+
+
+							<p:column headerText="Details"
+								style="width:32px;text-align: center">
+								<p:commandButton
+									actionListener="#{customerController.showCurrentPaymentCondition}"
+									update=":customersMangerForm:customers:form:carDetail"
+									oncomplete="PF('carDialog').show()" icon="ui-icon-search"
+									title="View" immediate="true">
+									<f:setPropertyActionListener value="#{newCustomer}"
+										target="#{customerController.selectedCustomer}" />
+								</p:commandButton>
+							</p:column>
+
+							<p:column headerText="Approve"
+								style="width:32px;text-align: center">
+								<p:commandButton
+									actionListener="#{customerController.approveNewCustomer(newCustomer)}"
+									update=":customersMangerForm" icon="ui-icon-search"
+									title="Approve">
+									<f:setPropertyActionListener value="#{newCustomer}"
+										target="#{customerController.selectedCustomer}" />
+								</p:commandButton>
+							</p:column>
+
+						</p:dataTable>
+
+						<p:dialog header="Car Info" widgetVar="carDialog" modal="true"
+							showEffect="fade" hideEffect="fade" resizable="false">
+							<p:outputPanel id="carDetail" style="text-align:center;">
+								<p:panelGrid columns="2"
+									rendered="#{customerController.selectedCustomer != null}"
+									columnClasses="label,value">
+									<f:facet name="header">
+
+									</f:facet>
+
+									<h:outputText value="Id:" />
+									<h:outputText
+										value="#{customerController.selectedCustomer.name}" />
+
+									<h:outputText
+										value="#{customerController.paymentCondition.startDate}" />
+
+
+								</p:panelGrid>
+							</p:outputPanel>
+						</p:dialog>
+					</h:form>
+				</p:tab>
+
+			</p:tabView>
+
+		</h:form>
+
+	</ui:define>
+</ui:composition>
+</html>

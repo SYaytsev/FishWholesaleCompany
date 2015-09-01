@@ -1,0 +1,254 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+<ui:composition template="WEB-INF/templates/BasicTemplate.xhtml">
+
+	<ui:define name="header">
+		<div id="main_header">
+			<div style="float: left; width: 70%;">
+				<h:outputStylesheet library="css" name="menu.css" />
+
+				<div id="navigation">
+					<ul>
+						<li><h:link value="About us" outcome="index.xhtml" />|</li>
+						<li><h:link value="Staff manager"
+								outcome="staffManager.xhtml" />|</li>
+						<li><h:link value="Contacts" outcome="contacts.xhtml" /></li>
+					</ul>
+				</div>
+
+			</div>
+			<ui:include src="login.xhtml" />
+		</div>
+	</ui:define>
+
+	<ui:define name="content">
+
+		<h:form id="usersForm">
+
+			<p:messages id="messages" showDetail="true" autoUpdate="true"
+				closable="true" />
+
+			<p:tabView id="currentUsers">
+				<p:tab
+					title="Current users (#{systemUserController.systemUsers.size()})">
+
+					<p:dataTable widgetVar="userTableVar"
+						value="#{systemUserController.systemUsers}" var="systemUser"
+						editable="true" style="text-align:center;"
+						emptyMessage="No users found. Press Add new User">
+
+						<p:ajax event="rowEdit"
+							listener="#{systemUserController.updateSystemUser}" />
+						<p:ajax event="rowEditCancel" />
+
+						<p:column headerText="First Name">
+							<h:outputText value="#{systemUser.employee.name}" />
+						</p:column>
+
+						<p:column filterBy="#{systemUser.employee.lastName}"
+							headerText="Last Name">
+							<h:outputText value="#{systemUser.employee.lastName}" />
+						</p:column>
+
+						<p:column headerText="Position">
+							<h:outputText value="#{systemUser.employee.position}" />
+						</p:column>
+
+						<p:column filterBy="#{systemUser.role}" filterMatchMode="exact"
+							headerText="Role">
+							<f:facet name="filter">
+								<p:selectOneMenu onchange="PF('userTableVar').filter()">
+									<f:selectItem itemLabel="select role" itemValue="#{null}"
+										noSelectionOption="true" />
+									<f:selectItems value="#{systemUserController.systemUserRoles}"
+										var="role" itemValue="#{role}" itemLabel="#{role.label}" />
+								</p:selectOneMenu>
+							</f:facet>
+							<h:outputText value="#{systemUser.role.label}" />
+						</p:column>
+
+						<p:column headerText="Login">
+							<h:outputText value="#{systemUser.login}" />
+						</p:column>
+
+						<p:column headerText="Start Date">
+							<h:outputText value="#{systemUser.startDate}">
+								<f:convertDateTime pattern="dd MMMM yyyy" locale="en" />
+							</h:outputText>
+						</p:column>
+
+						<p:column headerText="Expiry Date">
+							<p:cellEditor>
+								<f:facet name="output">
+									<h:outputText value="#{systemUser.expiryDate}">
+										<f:convertDateTime pattern="dd MMMM yyyy" locale="en" />
+									</h:outputText>
+								</f:facet>
+								<f:facet name="input">
+									<p:calendar value="#{systemUser.expiryDate}"
+										showButtonPanel="true" mindate="dWidget.today"
+										pattern="dd MMMM yyyy" navigator="true" locale="eg"
+										readonlyInput="true" effect="clip" effectDuration="slow" />
+								</f:facet>
+							</p:cellEditor>
+						</p:column>
+
+						<p:column headerText="Edit" style="width:30px;text-align: center">
+							<p:rowEditor />
+						</p:column>
+
+						<p:column headerText="Delete"
+							style="width:70px;text-align: center">
+							<p:commandButton
+								actionListener="#{systemUserController.deleteSystemUser(systemUser)}"
+								update=":usersForm" value="delete" title="delete user"
+								immediate="true">
+							</p:commandButton>
+						</p:column>
+
+					</p:dataTable>
+
+
+					<p:commandButton value="Add new User" title="add new user"
+						type="button" onclick="PF('addSystemUserDialog').show();"
+						style="margin-top:20px;">
+					</p:commandButton>
+
+
+					<p:dialog header="Add new User" widgetVar="addSystemUserDialog"
+						modal="true" width="400px">
+
+						<h:panelGrid id="addNewSystemUser" columns="2"
+							style="margin-bottom:10px" cellpadding="5">
+
+							<h:outputText value="Employee:" />
+							<p:selectOneMenu
+								value="#{systemUserController.selectedEmployeeId}" effect="fade">
+								<f:selectItem itemLabel="select employee" itemValue="" />
+								<f:selectItems value="#{systemUserController.currentEmployees}"
+									var="employee" itemValue="#{employee.id}"
+									itemLabel="#{employee.name} #{employee.lastName} (#{employee.personalNumber})" />
+							</p:selectOneMenu>
+
+							<h:outputText value="Role:" />
+							<p:selectOneMenu
+								value="#{systemUserController.newSystemUser.role}" effect="fade">
+
+								<f:selectItem itemLabel="select role" />
+								<f:selectItems value="#{systemUserController.systemUserRoles}"
+									var="role" itemValue="#{role}" itemLabel="#{role.label}" />
+							</p:selectOneMenu>
+
+							<h:outputLabel for="startDate" value="Start date:" />
+							<p:calendar id="startDate"
+								value="#{systemUserController.newSystemUser.startDate}"
+								showButtonPanel="true" mindate="dWidget.today"
+								pattern="dd MMMM yyyy" required="true" navigator="true"
+								locale="eg" readonlyInput="true" effect="clip"
+								effectDuration="slow">
+								<p:ajax process="startDate" update="expiryDate"
+									partialSubmit="true" event="dateSelect" />
+							</p:calendar>
+
+							<h:outputLabel for="expiryDate" value="Expiry Date:" />
+							<p:calendar id="expiryDate"
+								value="#{systemUserController.newSystemUser.expiryDate}"
+								showButtonPanel="true"
+								mindate="#{systemUserController.newSystemUser.startDate}"
+								pattern="dd MMMM yyyy" required="true" navigator="true"
+								locale="eg" readonlyInput="true" effect="clip"
+								effectDuration="slow" />
+
+
+							<p:commandButton id="addButton" value="Add" title="add new user"
+								actionListener="#{systemUserController.createNewSystemUser}"
+								update="currentUsers, addNewSystemUser" process="@all"
+								oncomplete="PF('addSystemUserDialog').hide();"/>
+
+							<p:commandButton id="cancelButton" value="Cancel"
+								title="close dialog" actionListener="#"
+								oncomplete="PF('addSystemUserDialog').hide();" immediate="true" />
+
+						</h:panelGrid>
+
+					</p:dialog>
+
+				</p:tab>
+
+				<p:tab
+					title="Employees history (#{systemUserController.allEmployees.size()})">
+
+					<p:dataTable value="#{systemUserController.allEmployees}"
+						var="hEmployee" style="text-align:center;"
+						emptyMessage="No registered EMPLOYEES found. Contact to the PR department">
+
+						<p:column sortBy="#{hEmployee.name}" headerText="Name">
+							<h:outputText value="#{hEmployee.name}" />
+						</p:column>
+
+						<p:column sortBy="#{hEmployee.lastName}" headerText="Last Name">
+							<h:outputText value="#{hEmployee.lastName}" />
+						</p:column>
+
+						<p:column sortBy="#{hEmployee.personalNumber}"
+							headerText="Personal Number">
+							<h:outputText value="#{hEmployee.personalNumber}" />
+						</p:column>
+
+						<p:column sortBy="#{hEmployee.position}" headerText="Position">
+							<h:outputText value="#{hEmployee.position}" />
+						</p:column>
+
+						<p:column headerText="Number of roles">
+							<h:outputText value="#{hEmployee.systemUsers.size()}" />
+						</p:column>
+
+						<p:column headerText="Details">
+							<p:rowToggler />
+						</p:column>
+
+						<p:rowExpansion>
+							<p:dataTable value="#{hEmployee.systemUsers}"
+								var="hEmployeesUserRole">
+
+								<p:column headerText="Role">
+									<h:outputText value="#{hEmployeesUserRole.role.label}" />
+								</p:column>
+
+								<p:column sortBy="#{hEmployeesUserRole.startDate}"
+									headerText="Start Date">
+									<h:outputText value="#{hEmployeesUserRole.startDate}">
+										<f:convertDateTime pattern="dd MMMM yyyy" locale="en" />
+									</h:outputText>
+								</p:column>
+
+								<p:column sortBy="#{hEmployeesUserRole.expiryDate}"
+									headerText="Expiry Date">
+									<h:outputText value="#{hEmployeesUserRole.expiryDate}">
+										<f:convertDateTime pattern="dd MMMM yyyy" locale="en" />
+									</h:outputText>
+								</p:column>
+							</p:dataTable>
+						</p:rowExpansion>
+
+					</p:dataTable>
+
+				</p:tab>
+
+
+			</p:tabView>
+
+		</h:form>
+
+	</ui:define>
+</ui:composition>
+</html>
+
+

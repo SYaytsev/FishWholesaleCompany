@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+<h:head>
+	<title>Payments of order #
+		#{orderController.selectedOrder.orderNumber}</title>
+	<style type="text/css">
+.ui-widget {
+	font-size: 80%;
+}
+</style>
+</h:head>
+
+<h:body>
+	<h:form>
+		<p:outputPanel id="orderDetails" style="text-align:center;">
+
+			<p:dataTable value="#{orderController.selectedOrder.payments}"
+				var="payment" emptyMessage="No payments found"
+				style="text-align:center;">
+
+				<p:column headerText="Date" sortBy="#{payment.paymentDate}">
+					<h:outputText value="#{payment.paymentDate}">
+						<f:convertDateTime pattern="dd MMMM yyyy" locale="en" />
+					</h:outputText>
+				</p:column>
+				<p:column headerText="Amount" sortBy="#{payment.amount}">
+					<h:outputText value="#{payment.amount}">
+						<f:convertNumber type="currency" currencySymbol="$" />
+					</h:outputText>
+				</p:column>
+
+			</p:dataTable>
+
+		</p:outputPanel>
+
+	</h:form>
+</h:body>
+
+</html>
+

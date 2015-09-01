@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core">
+
+<p:link
+	href='http://fonts.googleapis.com/css?family=Open+Sans:400,300,300italic,400italic,600'
+	rel='stylesheet' type='text/css'></p:link>
+<p:link
+	href="//netdna.bootstrapcdn.com/font-awesome/3.1.1/css/font-awesome.css"
+	rel="stylesheet"></p:link>
+
+<ui:composition template="WEB-INF/templates/BasicTemplate.xhtml">
+
+	<ui:define name="header">
+		<div id="main_header">
+			<div style="float: left; width: 70%;">
+				<h:outputStylesheet library="css" name="menu.css" />
+
+				<div id="navigation">
+					<ul>
+						<li><h:link value="About us" outcome="index.xhtml" />|</li>
+						<li><h:link value="Buy goods" outcome="buyGoods.xhtml" />|</li>
+						<li><h:link value="Contacts" outcome="contacts.xhtml" /></li>
+					</ul>
+				</div>
+
+			</div>
+
+			<ui:include src="login.xhtml" />
+		</div>
+	</ui:define>
+
+	<ui:define name="content">
+		<h:outputStylesheet library="css" name="footer.css" />
+		<div id="content">
+
+			<div class="bigblock">
+				
+				<p>Lorem ipsum dolor sit amet, consectetuer adipi scing
+					elit.Mauris urna urna, varius et, interdum a, tincidunt quis,
+					libero. Aenean sit amturpis.</p>
+				<p>Maecenas hendrerit, massa ac laoreet iaculipede mnisl
+					ullamcorpermassa, cosectetuer feipsum eget pede. Proin nunc. Donec
+					nonummy, tellus er sodales enim, in tincidunmauris in odio. Massa
+					ac laoreet iaculipede nisl ullamcorpermassa, ac consectetuer
+					feipsum eget pede. Proin nunc. Donec massa. Nulla pulvinar, nisl ac
+					convallis nonummy, tellus eros sodales enim, in tincidunt mauris in
+					odio. massa ac laoreet iaculipede niorpermassa,consectetuer feipsum
+					eget pede. Proin nunc. Donec massa. Nulla pulvinar, nisl ac
+					convallis nonummy, tellus eros sodales enim, in tincidunt mauris in
+					odio. Lorem ipsum dolor sit amet, consectetuer adipi scing
+					elit.Mauris urna urna, varius et, interdum a, tincidunt quis,
+					libero. Aenean sit amturpis.</p>
+				<p>Maecenas hendrerit, massa ac laoreet iaculipedenisl
+					ullamcorpermassa, ac consectetuer feipsum eget pede. Proin nunc.
+					Donec massa. Nulla pulvinar, nisl ac convallis nonummy, tellus eros
+					sodales enim, in tincidunt mauris in odio. massa ac laoreet
+					iaculipede nisl ullamcorpermassa, ac consectetuer feipsum eget
+					pede. Proin nunc. Donec massa. Nulla pulvinar, nisl ac convallis
+					nonummy, tellus eros sodales enim, in tincidunt mauris in odio.
+					massa ac laoreet iaculipede nisl ullamcorpermassa,consectetuer
+					feipsum eget pede. Proin nunc. Donec massa. Nulla pulvinar, nisl ac
+					convallis nonummy, tellus eros sodales enim, in tincidunt mauris in
+					odio.</p>
+				<p>Maecenas hendrerit, massa ac laoreet iaculipede mnisl
+					ullamcorpermassa, cosectetuer feipsum eget pede. Proin nunc. Donec
+					nonummy, tellus er sodales enim, in tincidunmauris in odio. Massa
+					ac laoreet iaculipede nisl ullamcorpermassa, ac consectetuer
+					feipsum eget pede.</p>
+				<a href="#">Our Services</a>
+			</div>
+			<div class="news">
+				
+				<div class="newsblock">
+					<p class="date">05 december</p>
+					<p>Lorem ipsum dolor sit asectetuer adip scing elit mauris urna
+						urna, unt quis, libero. Maecenas hen- drerit, massa ac laoreet
+						iaculip- edenisl ullamcorpermassa.</p>
+					<p>
+						<a href="#">read more</a>
+					</p>
+				</div>
+				<div class="newsblock">
+					<p class="date">12 december</p>
+					<p>Lorem ipsum dolor sit asectetuer adip scing elit mauris urna
+						urna, unt quis, libero. Maecenas hendrerit, massa ac laoreet
+						iaculipedenisl. Donec massa. Nulla pulvinar, nisl ac convallis
+						nonummy, tellus eros sodales enim, in tincidunt mauris in odio.
+						massa ac laoreet iaculipede nisl ullamcorpermassa.</p>
+					<p>
+						<a href="#">read more</a>
+					</p>
+				</div>
+			</div>
+		</div>
+	</ui:define>
+
+</ui:composition>
+</html>

@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core">
+<!-- <h:outputStylesheet library="css" name="reg.css" /> -->
+<h:head>
+	<title>Registration</title>
+
+	<style type="text/css">
+.ui-widget {
+	font-size: 90%;
+}
+</style>
+
+</h:head>
+
+<h:body>
+
+	<h:form widgetVar="registerDialog">
+		<h:panelGrid id="grid" columns="2" cellpadding="5">
+
+			<h:outputLabel for="name" value="Company name:"
+				style="font-weight:bold" />
+			<p:inputText id="name"
+				value="#{customerRegisterController.customer.name}" label="name"
+				maxlength="50" required="true" />
+
+			<h:outputLabel for="CRScode" value="CRS code:"
+				style="font-weight:bold" />
+			<p:inputMask id="CRScode"
+				value="#{customerRegisterController.customer.CRScode}"
+				mask="99999999" required="true">
+			</p:inputMask>
+
+			<h:outputLabel for="address" value="Address:"
+				style="font-weight:bold" />
+			<p:inputText id="address"
+				value="#{customerRegisterController.customer.address}"
+				label="address" maxlength="70" required="true" />
+
+			<h:outputLabel for="contactPerson" value="Contact person:"
+				style="font-weight:bold" />
+			<p:inputText id="contactPerson"
+				value="#{customerRegisterController.customer.contactPerson}"
+				label="contactPerson" maxlength="40" required="true" />
+
+			<h:outputLabel for="phoneNumber" value="Phone number:"
+				style="font-weight:bold" />
+			<p:inputMask id="phoneNumber"
+				value="#{customerRegisterController.customer.phoneNumber}"
+				mask="(999) 999-9999" required="true" />
+
+			<h:outputLabel for="login" value="Login" style="font-weight:bold" />
+			<p:inputText id="login"
+				value="#{customerRegisterController.customer.login}" label="login"
+				maxlength="30" required="true" />
+
+			<h:outputLabel for="password" value="Password:"
+				style="font-weight:bold" />
+			<p:password id="password"
+				value="#{customerRegisterController.customer.pass}" maxlength="20"
+				required="true" />
+
+			<p:commandButton id="okButton" value="OK" title="sign up"
+				actionListener="#{customerRegisterController.createNewCustomer}"
+				update="grid" />
+
+			<p:commandButton id="cancelButton" value="Cancel"
+				title="cancel registration"
+				actionListener="#{customerRegisterController.closeRegisterDialog}"
+				immediate="true" />
+
+		</h:panelGrid>
+
+	</h:form>
+
+</h:body>
+
+</html>

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<persistence xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/persistence    
+                http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd"
+	version="2.0" xmlns="http://java.sun.com/xml/ns/persistence">
+	<persistence-unit name="CashM" transaction-type="RESOURCE_LOCAL">
+		<provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
+
+		<class>ua.pp.fishstore.entity.Employee</class>
+		<class>ua.pp.fishstore.entity.SystemUser</class>
+
+		<class>ua.pp.fishstore.entity.Customer</class>
+		<class>ua.pp.fishstore.entity.PaymentCondition</class>
+
+		<class>ua.pp.fishstore.entity.GoodsOrder</class>
+		<class>ua.pp.fishstore.entity.Payment</class>
+		<class>ua.pp.fishstore.entity.OrderConsistsOf</class>
+
+		<class>ua.pp.fishstore.entity.InventoryType</class>
+		<class>ua.pp.fishstore.entity.Delivery</class>
+		<class>ua.pp.fishstore.entity.InventoryItem</class>
+
+		<class>ua.pp.fishstore.entity.IncomeStatementPerDay</class>
+
+		<class>ua.pp.fishstore.entity.Constant</class>
+
+
+		<properties>
+			<property name="javax.persistence.jdbc.driver" value="org.apache.derby.jdbc.EmbeddedDriver" />
+			<property name="javax.persistence.jdbc.url" value="jdbc:derby:..\FSDB;create=true" />
+			<property name="eclipselink.ddl-generation.output-mode"
+				value="database" />
+
+
+		</properties>
+	</persistence-unit>
+</persistence> 
+                 

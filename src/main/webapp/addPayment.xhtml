@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+<h:head>
+	<title>Add new payment for order#
+		#{orderController.oderToAddPayment.orderNumber}</title>
+	<style type="text/css">
+.ui-widget {
+	font-size: 80%;
+}
+</style>
+</h:head>
+
+<h:body>
+	<h:form>
+		<h:panelGrid id="addNewPayment" columns="3" cellpadding="5">
+
+			<h:outputLabel style="font-weight:bold" value="Order number:"
+				for="orderNumber" />
+			<p:inputText id="orderNumber"
+				value="#{orderController.oderToAddPayment.orderNumber}"
+				required="true" requiredMessage="Order number is empty" />
+			<p:watermark for="orderNumber" value="put order number" />
+
+
+			<h:outputLabel style="font-weight:bold" for="paymentDate"
+				value="Payment date:" />
+			<p:calendar id="paymentDate"
+				value="#{orderController.newPayment.paymentDate}"
+				showButtonPanel="true" pattern="dd MMMM yyyy" required="true"
+				requiredMessage="Date is empty" navigator="true" locale="eg"
+				readonlyInput="true" effect="clip" effectDuration="slow">
+			</p:calendar>
+			<p:watermark for="paymentDate" value="put order data" />
+
+			<h:outputLabel style="font-weight:bold" for="paymentAmount"
+				value="Amount of payment:" />
+			<p:spinner id="paymentAmount"
+				value="#{orderController.newPayment.amount}" min="0" prefix="$"
+				stepFactor="0.25" required="true" />
+			<br />
+
+			<p:commandButton id="addButton" value="Add" title="add new payment"
+				action="#{orderController.addPayment}" process="@all" />
+
+			<p:commandButton id="cancelButton" value="Cancel"
+				title="close dialog"
+				actionListener="#{orderController.closeAddPaymentDialog}"
+				immediate="true" />
+
+
+		</h:panelGrid>
+
+	</h:form>
+</h:body>
+
+</html>

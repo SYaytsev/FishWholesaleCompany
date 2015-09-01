@@ -1,0 +1,78 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+          "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+<h:body>
+	<div align="center" style="float: right; width: 30%; height: 150px">
+		<h:form style="login">
+
+			<p:panel id="loginPanel"
+				rendered="#{loginController.somebodyLoged}">
+				<p:clock pattern="HH:mm:ss dd.MM.yyyy" mode="server" />
+
+				<p:focus context="loginPanel" />
+
+				<p:inputText id="username" label="username" size="40"
+					value="#{loginController.login}" required="true">
+				</p:inputText>
+				<p:watermark for="username" value="Login *" />
+				<p:message rendered="false" for="username" />
+
+				<br />
+				<br />
+
+				<p:password id="password" label="password" size="40"
+					requiredMessage="" value="#{loginController.password}"
+					maxlength="20" required="true">
+				</p:password>
+				<p:watermark for="password" value="Password *" />
+				<p:message rendered="false" for="password" />
+
+				<p:commandButton value="Login" title="login" style="margin:20px"
+					action="#{loginController.doLogin}" update="@all" />
+
+				<p:commandButton value="Sign up" title="registration"
+					style="margin:20px"
+					actionListener="#{customerRegisterController.viewRegisterForm}"
+					immediate="true" />
+
+			</p:panel>
+
+
+			<p:panel style="height:150px" id="panelC"
+				rendered="#{loginController.currentCustomer!=null}">
+				<h:outputText value="#{loginController.currentCustomer.name} " />
+
+				<p:commandLink action="#{loginController.doLogOut}">
+					<h:outputText value="login out" />
+				</p:commandLink>
+				<br />
+				<h:link style="color:red" value="basket" outcome="basket.xhtml" />
+			</p:panel>
+
+			<p:panel id="panelS"
+				rendered="#{loginController.currentSystemUser!=null}">
+
+				<h:outputText
+					value="#{loginController.currentSystemUser.role.label}" />
+				<br />
+				<h:outputText
+					value="#{loginController.currentSystemUser.employee.name} " />
+				<h:outputText
+					value="#{loginController.currentSystemUser.employee.lastName} " />
+
+				<p:commandLink actionListener="#{loginController.doLogOut}">
+					<h:outputText style="font-style:italic;" value="log out" />
+				</p:commandLink>
+			</p:panel>
+
+
+		</h:form>
+	</div>
+</h:body>
+</html>

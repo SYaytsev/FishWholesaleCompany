@@ -1,0 +1,28 @@
+#navigation {
+	background-image: url(images/bottom_bg.gif);
+	background-position: top left;
+	background-repeat: no-repeat;
+	width: 100%;
+	text-align: center;
+	line-height: 33px;
+	color: #D4E9F0;
+}
+
+#navigation li {
+	display: inline;
+}
+
+#navigation a {
+	color: #2840B8;
+	text-decoration: none;
+	margin: 0 8px;
+}
+
+#navigation a:visited {
+	text-decoration: none
+}
+
+#navigation a:hover {
+	text-decoration: underline;
+	color: green;
+}

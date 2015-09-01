@@ -1,0 +1,76 @@
+#body {
+	width: 95%;
+	max-width: 1200px;
+	margin: 1% auto 0;
+	overflow: hidden;
+	overflow-y: scroll;
+	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+	background-color: white;
+}
+
+#main_header {
+	overflow: hidden;
+	width: 100%;
+	margin: 1% auto 0;
+	box-shadow: 0 0 1em #333333;
+	height: 150px;
+}
+/*
+#main_footer {
+	display: block;
+	width: 100%;
+	margin: 0 auto;
+	/* border-top: 3px solid #222; */
+}*/
+
+#copyright {
+	width: 300px;
+	margin: 20px auto;
+	padding: 0.5em;
+	text-align: center;
+	font-size: 80%;
+	background-color: #dcdcdc;
+}
+
+.up_down_shadows {
+	position: relative;
+	background: #fff;
+}
+
+.up_down_shadows:after {
+	content: "";
+	position: absolute;
+	z-index: -2;
+}
+
+.up_down_shadows:after {
+	top: 0px;
+	bottom: 0px;
+	left: 30px;
+	right: 30px;
+	-webkit-box-shadow: 0 0 15px rgba(0, 0, 0, 0.6);
+	-moz-box-shadow: 0 0 15px rgba(0, 0, 0, 0.6);
+	box-shadow: 0 0 15px rgba(0, 0, 0, 0.6);
+	-moz-border-radius: 80px/20px;
+	border-radius: 80px/20px;
+}
+
+.ui-widget {
+	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+	font-size: 0.8em;
+}
+
+
+
+/*Change default datatable message*/
+.ui-datatable-empty-message {
+	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+	font-style: italic;
+	font-weight: bold;
+	color: red;
+}
+
+
+
+
+

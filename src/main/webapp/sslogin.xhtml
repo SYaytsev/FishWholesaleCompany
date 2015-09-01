@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+	
+<h:head>
+    <h:outputStylesheet library="css" name="styles.css"/>
+</h:head>
+
+<body>
+<h:form prependId="false" rendered="#{!loginBean.authenticated}" styleClass="centerPanel" style="border-style: none">
+    <p:outputLabel rendered="#{loginBean.loginError}" value="Bad credentials" style="color: darkred"/>
+    <p:growl id="growl" showDetail="true" sticky="true"/>
+    <p:panel header="Login"> <h:panelGrid id="loginGrid" columns="2" cellpadding="5">
+        <p:outputLabel for="j_username" value="Login:">
+        </p:outputLabel>
+        <p:inputText
+                id="j_username"
+                required="true">
+        </p:inputText>
+        <p:outputLabel for="j_password" value="Password:"/>
+        <p:password
+                id="j_password"
+                required="true">
+        </p:password>
+        <p:outputLabel for="_spring_security_remember_me"> <p:outputLabel
+                value="Remember me"/> </p:outputLabel>
+        <p:inputSwitch
+                id="_spring_security_remember_me"/>
+
+
+        <p:commandButton ajax="false"
+                         immediate="true"
+                         value="Cancel"
+                         actionListener="#{loginBean.doCancel}"/>
+
+        <p:commandButton ajax="false"
+                         type="submit"
+                         value="Login"
+                         action="#{loginBean.doLogin}" />
+    </h:panelGrid>
+    </p:panel>
+</h:form>
+
+<h:form>
+    <p:commandButton ajax="false" action="#{loginBean.doLogout}" value="Logout" rendered="#{loginBean.authenticated}" styleClass="centerPanel"/>
+</h:form>
+</body>
+</html>

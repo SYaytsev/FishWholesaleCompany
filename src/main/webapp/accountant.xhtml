@@ -1,0 +1,172 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+<ui:composition template="WEB-INF/templates/BasicTemplate.xhtml">
+
+	<ui:define name="header">
+		<div id="main_header">
+			<div style="float: left; width: 70%;">
+				<h:outputStylesheet library="css" name="menu.css" />
+
+				<div id="navigation">
+					<ul>
+						<li><h:link value="About us" outcome="index.xhtml" />|</li>
+						<li><h:link value="Order manager" outcome="accountant.xhtml" />|</li>
+						<li><h:link value="Contacts" outcome="contacts.xhtml" /></li>
+					</ul>
+				</div>
+
+			</div>
+
+			<ui:include src="login.xhtml" />
+		</div>
+	</ui:define>
+
+	<ui:define name="content">
+		<h:form id="paymensManager">
+
+			<p:panel id="toggleable" header="Add new payment" toggleable="true"
+				toggleSpeed="500" closeSpeed="500" widgetVar="panel"
+				style="margin-bottom:20px">
+
+				<h:panelGrid id="addPayment" columns="2" style="margin-bottom:10px"
+					cellpadding="5">
+
+					<h:outputText value="Order number:" />
+					<p:selectOneMenu value="#{orderController.allGoodsOrders}"
+						effect="fade">
+
+						<f:selectItem itemLabel="select number" itemValue="" />
+						<f:selectItems value="#{orderController.allGoodsOrders}"
+							var="employee" itemValue="#{employee.id}"
+							itemLabel="#{employee.name} #{employee.lastName} (#{employee.personalNumber})" />
+
+
+					</p:selectOneMenu>
+				</h:panelGrid>
+
+			</p:panel>
+
+
+
+			<p:tabView id="ordersWithStatus">
+
+				<p:tab id="reservedStatus"
+					title="Reserved orders (#{orderController.reservedGoodsOrders.size()})">
+
+					<h:form id="reservedOrdersForm">
+
+						<p:dataTable id="reservedOrders"
+							value="#{orderController.allGoodsOrders}" var="reservedOrder"
+							emptyMessage="No reserved orders found"
+							style="text-align:center;">
+
+							<p:columnGroup type="header">
+								<p:row>
+									<p:column rowspan="2" headerText="Number"
+										filterBy="#{reservedOrder.orderNumber}" />
+									<p:column rowspan="2" headerText="Date"
+										sortBy="#{reservedOrder.orderDate}" />
+									<p:column rowspan="2" headerText="Amount" />
+									<p:column rowspan="2" headerText="Done payments" />
+
+									<p:column colspan="2" headerText="Customer" />
+									<p:column colspan="2" headerText="Contact data" />
+								</p:row>
+
+								<p:row>
+									<p:column headerText="Name"
+										sortBy="#{reservedOrder.customer.name}" />
+									<p:column headerText="CRS code"
+										sortBy="#{reservedOrder.customer.CRScode}" />
+									<p:column headerText="Person name" />
+									<p:column headerText="Phone number" />
+								</p:row>
+							</p:columnGroup>
+
+
+							<p:column>
+								<h:outputText value="#{reservedOrder.orderNumber}" />
+							</p:column>
+
+							<p:column>
+								<h:outputText value="#{reservedOrder.orderDate}">
+									<f:convertDateTime pattern="dd MMMM yyyy" locale="en" />
+								</h:outputText>
+							</p:column>
+
+							<p:column>
+								<h:outputText value="#{reservedOrder.totalAmount}" />
+							</p:column>
+
+							<p:column style="width:32px;text-align: center">
+								<p:commandButton
+									update=":paymensManager:ordersWithStatus:reservedOrdersForm:orderDetails"
+									oncomplete="PF('orderDialog').show()" icon="ui-icon-search"
+									title="show payments">
+									<f:setPropertyActionListener value="#{reservedOrder}"
+										target="#{orderController.selectedOrder}" />
+								</p:commandButton>
+							</p:column>
+
+							<p:column>
+								<h:outputText value="#{reservedOrder.customer.name}" />
+							</p:column>
+
+							<p:column>
+								<h:outputText value="#{reservedOrder.customer.CRScode}" />
+							</p:column>
+
+							<p:column>
+								<h:outputText value="#{reservedOrder.customer.contactPerson}" />
+							</p:column>
+
+							<p:column>
+								<h:outputText value="#{reservedOrder.customer.phoneNumber}" />
+							</p:column>
+
+						</p:dataTable>
+
+						<p:dialog
+							header="Payments of order ##{orderController.selectedOrder.orderNumber}"
+							widgetVar="orderDialog" modal="true" showEffect="fade"
+							hideEffect="fade" resizable="false">
+
+							<p:outputPanel id="orderDetails" style="text-align:center;">
+
+								<p:dataTable value="#{orderController.selectedOrder.payments}"
+									var="payment" rendered="#{payment != null}"
+									emptyMessage="No payments found" style="text-align:center;">
+
+									<p:column headerText="Date" sortBy="#{payment.paymentDate}">
+										<h:outputText value="#{payment.paymentDate}">
+											<f:convertDateTime pattern="dd MMMM yyyy" locale="en" />
+										</h:outputText>
+									</p:column>
+									<p:column headerText="Amount" sortBy="#{payment.amount}">
+										<h:outputText value="#{payment.amount}" />
+									</p:column>
+
+								</p:dataTable>
+
+							</p:outputPanel>
+
+						</p:dialog>
+					</h:form>
+				</p:tab>
+
+
+
+
+			</p:tabView>
+
+		</h:form>
+	</ui:define>
+</ui:composition>
+</html>

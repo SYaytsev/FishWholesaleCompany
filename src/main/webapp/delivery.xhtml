@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core">
+<!-- <h:outputStylesheet library="css" name="reg.css" /> -->
+<h:head>
+	<title>New Delivery</title>
+
+	<style type="text/css">
+.ui-widget {
+	font-size: 90%;
+}
+</style>
+
+</h:head>
+
+<h:body>
+
+	<h:form id="addNewDeliveryDialog" widgetVar="addNewDeliveryDialog">
+
+		<h:panelGrid id="grid" columns="4" cellpadding="5"
+			rendered="#{storeController.newDelivery.deliveryNumber == null}">
+			<h:outputLabel for="deliveryNumber" value="Number:"
+				style="font-weight:bold" />
+			<p:inputText id="deliveryNumber"
+				value="#{storeController.newDelivery.deliveryNumber}"
+				label="deliveryNumber" maxlength="20" required="true" />
+
+			<h:outputLabel for="deliveryDate" value="Date:"
+				style="font-weight:bold" />
+			<p:calendar id="deliveryDate"
+				value="#{storeController.newDelivery.deliveryDate}"
+				showButtonPanel="true" pattern="dd MMMM yyyy" navigator="true"
+				locale="eg" readonlyInput="true" effect="clip" effectDuration="slow"
+				required="true" />
+
+			<h:outputLabel for="supplier" value="Supplier:"
+				style="font-weight:bold" />
+			<p:inputText id="supplier"
+				value="#{storeController.newDelivery.supplier}" label="supplier"
+				maxlength="20" required="true" requiredMessage="Put supplier name"/>
+
+			<h:outputLabel for="country" value="Country:"
+				style="font-weight:bold" />
+			<p:selectOneMenu value="#{storeController.newDelivery.countryFrom}"
+				effect="fade" required="true">
+
+				<f:selectItem itemLabel="select country" />
+				<f:selectItems value="#{storeController.countries}" var="country"
+					itemValue="#{country.label}" itemLabel="#{country.label}" />
+			</p:selectOneMenu>
+
+			<p:commandButton id="addDelivery" value="Add delivery"
+				action="#{storeController.createNewDelivery}"
+				update="addNewDeliveryDialog" />
+
+			<p:commandButton id="cancelButton" value="Cancel"
+				actionListener="#{storeController.closeRegisterDialog}"
+				immediate="true" />
+			<br />
+
+		</h:panelGrid>
+
+		<p:dataTable id="deliveryDetail"
+			value="#{storeController.inventoryItems}" var="inventoryItem"
+			rendered="#{storeController.newDelivery.deliveryNumber != null}">
+
+			<f:facet name="header">
+            	Delivery # #{storeController.newDelivery.deliveryNumber}
+       		</f:facet>
+
+			<p:column headerText="Type">
+				<h:outputText
+					value="#{inventoryItem.inventoryType.name} (#{inventoryItem.inventoryType.weight} kg)" />
+			</p:column>
+
+			<p:column sortBy="#{inventoryItem.declaredIncomingNumber}"
+				headerText="Number">
+				<h:outputText value="#{inventoryItem.declaredIncomingNumber}" />
+			</p:column>
+
+			<p:column sortBy="#{inventoryItem.COGS}" headerText="COGS">
+				<h:outputText value="#{inventoryItem.COGS}">
+					<f:convertNumber type="currency" currencySymbol="$" />
+				</h:outputText>
+			</p:column>
+
+		</p:dataTable>
+
+
+
+		<h:form>
+
+			<h:panelGrid id="inventoryItemAdd" columns="7" cellpadding="5"
+				rendered="#{storeController.newDelivery.deliveryNumber != null}">
+
+				<h:outputText value="Type:" />
+				<p:selectOneMenu value="#{storeController.inventoryTypeId}"
+					effect="fade" required="true">
+
+					<f:selectItem itemLabel="select type" itemValue="" />
+					<f:selectItems value="#{storeController.inventoryTypes}" var="type"
+						itemValue="#{type.id}"
+						itemLabel="#{type.name} (#{type.weight} kg)" />
+
+				</p:selectOneMenu>
+
+				<h:outputLabel for="declaredNumber" value="Number:" />
+				<p:spinner id="declaredNumber"
+					value="#{storeController.newInventoryItem.declaredIncomingNumber}"
+					min="1" required="true" />
+
+				<h:outputLabel for="COGS" value="COGS:" />
+				<p:spinner id="COGS"
+					value="#{storeController.newInventoryItem.COGS}" min="0" prefix="$"
+					stepFactor="0.25" required="true" />
+
+
+				<p:commandButton id="addItem" value="Add Item"
+					actionListener="#{storeController.addItemToDelivery}" ajax="false" />
+
+			</h:panelGrid>
+
+
+
+			<h:panelGrid id="controlButtons" columns="2" cellpadding="25"
+				rendered="#{storeController.newDelivery.deliveryNumber != null}">
+
+
+				<p:commandButton id="saveDelivery" value="Save delivery"
+					actionListener="#{storeController.saveDelivery}" ajax="false"
+					immediate="true" />
+
+				<p:commandButton id="deleteDelivery" value="Delete delivery"
+					actionListener="#{storeController.deleteDelivery}" ajax="false"
+					immediate="true" />
+
+			</h:panelGrid>
+
+		</h:form>
+
+	</h:form>
+</h:body>
+
+</html>

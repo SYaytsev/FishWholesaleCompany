@@ -1,0 +1,116 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+<ui:composition template="WEB-INF/templates/BasicTemplate.xhtml">
+
+	<ui:define name="header">
+		<div id="main_header">
+			<div style="float: left; width: 70%;">
+				<h:outputStylesheet library="css" name="menu.css" />
+
+				<div id="navigation">
+					<ul>
+						<li><h:link value="About us" outcome="index.xhtml" />|</li>
+						<li><h:link value="Goods manager" outcome="goodsManager.xhtml" />|</li>
+						<li><h:link value="Customer manager" outcome="customerManager.xhtml" />|</li>
+						<li><h:link value="Contacts" outcome="contacts.xhtml" /></li>
+					</ul>
+				</div>
+
+			</div>
+
+			<ui:include src="login.xhtml" />
+		</div>
+	</ui:define>
+
+
+	<ui:define name="content">
+		<h:form id="goodsMangerForm">
+		
+		<p:commandButton value="Add new delivery" style="margin:20px"
+						actionListener="#{storeController.viewAddDeliveryDialog}"
+						immediate="true" />
+
+			<p:tabView id="parcels">
+
+				<p:tab title="New parcel">
+
+
+				</p:tab>
+
+
+				<p:tab title="All parcels (#{storeController.allDeliveries.size()})">
+
+					<p:dataTable value="#{storeController.allDeliveries}"
+						var="delivery" editable="true" style="text-align:center;"
+						emptyMessage="No parcels found. Press Add new Parcel">
+
+						<p:column headerText="Supplier" filterBy="#{delivery.supplier}">
+							<h:outputText value="#{delivery.supplier}" />
+						</p:column>
+
+						<p:column filterBy="#{delivery.deliveryNumber}"
+							headerText="Order number">
+							<h:outputText value="#{delivery.deliveryNumber}" />
+						</p:column>
+
+						<p:column headerText="Delivery date"
+							filterBy="#{delivery.deliveryDate}">
+
+							<f:facet name="filter">
+								<p:calendar value="#{delivery.deliveryDate}"
+									showButtonPanel="true" pattern="dd MMMM yyyy" navigator="true"
+									locale="eg" readonlyInput="true" effect="clip"
+									effectDuration="slow" />
+							</f:facet>
+
+							<h:outputText value="#{delivery.deliveryDate}">
+								<f:convertDateTime pattern="dd MMMM yyyy" locale="en" />
+							</h:outputText>
+						</p:column>
+
+						<p:column filterBy="#{delivery.countryFrom}" headerText="Country">
+							<h:outputText value="#{delivery.countryFrom}" />
+						</p:column>
+
+						<p:column headerText="Consists of"
+							style="width:70px; text-align: center">
+							<p:commandButton update=":goodsMangerForm:parcels:parcelDetail"
+								oncomplete="PF('parcelDialog').show()" icon="ui-icon-search"
+								title="View details">
+								<f:setPropertyActionListener value="#{delivery}"
+									target="#{storeController.selectedDelivery}" />
+							</p:commandButton>
+						</p:column>
+
+					</p:dataTable>
+
+					<p:dialog
+						header="#{storeController.selectedDelivery.deliveryNumber}"
+						widgetVar="parcelDialog" modal="true" showEffect="fade"
+						hideEffect="fade" resizable="false">
+						<p:outputPanel id="parcelDetail" style="text-align:center;">
+							<p:panelGrid>
+								<h:outputText
+									value="#{storeController.selectedDelivery.deliveryNumber}" />
+							</p:panelGrid>
+						</p:outputPanel>
+					</p:dialog>
+
+
+
+
+				</p:tab>
+			</p:tabView>
+
+		</h:form>
+	</ui:define>
+</ui:composition>
+
+</html>

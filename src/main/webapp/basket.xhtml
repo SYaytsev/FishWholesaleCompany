@@ -1,0 +1,117 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+<ui:composition template="WEB-INF/templates/BasicTemplate.xhtml">
+	<ui:define name="header">
+		<div id="main_header">
+			<div style="float: left; width: 70%;">
+				<h:outputStylesheet library="css" name="menu.css" />
+
+				<div id="navigation">
+					<ul>
+						<li><h:link value="About us" outcome="index.xhtml" />|</li>
+						<li><h:link value="Buy goods" outcome="buyGoods.xhtml" />|</li>
+						<li><h:link value="Contacts" outcome="contacts.xhtml" /></li>
+					</ul>
+				</div>
+
+			</div>
+
+			<ui:include src="login.xhtml" />
+		</div>
+	</ui:define>
+	<ui:define name="content">
+
+		<h:form>
+
+			<p:messages id="messages" display="text" showDetail="true"
+				autoUpdate="true" closable="true" />
+
+			<p:dataTable id="bookedOrder" widgetVar="userTableVar"
+				value="#{buyGoodsController.selectedInventoryItems}"
+				var="selectedItem" editable="true" style="text-align:center;"
+				emptyMessage="Basket is empty">
+
+				<p:column headerText="Name of fish"
+					sortBy="#{selectedItem.inventoryType.name}">
+					<h:outputLink value="#">
+						<h:outputText id="typeItem"
+							value="#{selectedItem.inventoryType.name}" />
+					</h:outputLink>
+
+					<p:overlayPanel id="detailPanel" for="typeItem" hideEffect="fade">
+						<h:outputText value="#{selectedItem.inventoryType.description}" />
+					</p:overlayPanel>
+				</p:column>
+
+				<p:column headerText="Total weight"
+					sortBy="#{selectedItem.totalWeight}">
+					<h:outputText value="#{selectedItem.totalWeight} kg" />
+				</p:column>
+
+				<p:column headerText="Total quantity"
+					sortBy="#{selectedItem.totalSelectedNumber}">
+					<h:outputText id="ajaxLeftNumber"
+						value="#{selectedItem.totalSelectedNumber}">
+					</h:outputText>
+				</p:column>
+
+				<p:column headerText="Total cost" sortBy="#{selectedItem.totalCost}">
+					<h:outputText id="ajaxCost" value="#{selectedItem.totalCost}">
+						<f:convertNumber type="currency" currencySymbol="$" />
+					</h:outputText>
+				</p:column>
+
+				<p:column headerText="Delete from basket">
+					<p:commandButton id="deleteFromBasket" value="Delete" update="@all"
+						actionListener="#{buyGoodsController.deleteFromBasket(selectedItem)}" />
+				</p:column>
+
+				<p:columnGroup
+					rendered="#{buyGoodsController.selectedInventoryItems.isEmpty() != true}"
+					type="footer">
+					<p:row>
+						<p:column footerText="Total: " style="text-align:center" />
+
+						<p:column
+							footerText="#{buyGoodsController.calculateTotalWeight()}" />
+						<p:column
+							footerText="#{buyGoodsController.calculateTotalQuantity()}" />
+						<p:column footerText="#{buyGoodsController.calculateTotalCost()}" />
+
+						<p:column />
+					</p:row>
+				</p:columnGroup>
+
+				<f:facet name="footer">
+					<h:outputText style="color:blue; font-style:italic"
+						value="back to " />
+					<h:link style="color:blue; font-style:italic" value="ordering goods"
+						outcome="buyGoods.xhtml" />
+				</f:facet>
+			</p:dataTable>
+
+			<h:panelGrid id="controlButtons" columns="2" cellpadding="15">
+
+				<p:commandButton id="submitButton" style="margin-top:15px;"
+					value="Submit order" update="@all"
+					disabled="#{buyGoodsController.selectedInventoryItems.isEmpty()}"
+					actionListener="#{buyGoodsController.createNewOrder}" />
+
+				<p:commandButton id="deleteAll" style="margin-top:15px;"
+					value="Delete All" update="@all"
+					disabled="#{buyGoodsController.selectedInventoryItems.isEmpty()}"
+					actionListener="#{buyGoodsController.deleteAllFromBasket}" />
+
+			</h:panelGrid>
+		</h:form>
+
+	</ui:define>
+</ui:composition>
+</html>

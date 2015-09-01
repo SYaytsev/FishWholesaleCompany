@@ -1,0 +1,68 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+<ui:composition template="WEB-INF/templates/BasicTemplate.xhtml">
+
+	<ui:define name="header">
+		<div id="main_header">
+			<div style="float: left; width: 70%;">
+				<h:outputStylesheet library="css" name="menu.css" />
+
+				<div id="navigation">
+					<ul>
+						<li><h:link value="About us" outcome="index.xhtml" />|</li>
+						<li><h:link value="Buy goods" outcome="buyGoods.xhtml" />|</li>
+						<li><h:link value="Contacts" outcome="contacts.xhtml" /></li>
+					</ul>
+				</div>
+
+			</div>
+
+			<ui:include src="login.xhtml" />
+		</div>
+	</ui:define>
+
+
+	<ui:define name="content">
+		<h:outputStylesheet library="css" name="footer.css" />
+		<h:form>
+
+			<p:gmap id="gmap" center="50.47018317606899,30.48658177256584"
+				zoom="13" type="roadmap" model="#{mapModelView.advancedModel}"
+				style="width:900px;height:450px;margin: auto">
+
+				<p:ajax event="overlaySelect"
+					listener="#{mapModelView.onMarkerSelect}" />
+
+				<p:gmapInfoWindow id="infoWindow">
+					<p:outputPanel
+						style="text-align: center; font-weight: bold; font-style: italic; display: block; margin: auto">
+
+						<p:graphicImage name="/images/#{mapModelView.marker.data}"
+							width="170" />
+						<br />
+
+						<h:outputText value="#{mapModelView.marker.title}" />
+
+					</p:outputPanel>
+				</p:gmapInfoWindow>
+			</p:gmap>
+
+			<p:outputPanel style="display:none">
+				<p:graphicImage name="/images/logo.png" />
+				<p:graphicImage name="/images/store.png" />
+			</p:outputPanel>
+
+		</h:form>
+
+	</ui:define>
+
+
+</ui:composition>
+
+</html>
